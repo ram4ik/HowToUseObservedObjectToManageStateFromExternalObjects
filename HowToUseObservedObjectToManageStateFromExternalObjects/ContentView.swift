@@ -6,23 +6,32 @@
 //  Copyright © 2019 com.ri. All rights reserved.
 //
 
+import Combine
 import SwiftUI
+
+class UserAuthentication: ObservableObject {
+    let objectWillChange = ObservableObjectPublisher()
+
+    var username = "" {
+        willSet {
+            objectWillChange.send()
+        }
+    }
+}
 
 class UserSettings: ObservableObject {
     @Published var score = 0
 }
 
 struct ContentView: View {
-    @ObservedObject var settings = UserSettings()
+    @ObservedObject var settings = UserAuthentication()
 
     var body: some View {
         VStack {
-            Text("Your score is \(settings.score)")
-            Button(action: {
-                self.settings.score += 1
-            }) {
-                Text("Increase Score")
-            }
+            TextField("Username", text: $settings.username)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+
+            Text("Your username is: \(settings.username)")
         }
     }
 }
