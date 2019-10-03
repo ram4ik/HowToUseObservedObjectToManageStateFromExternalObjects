@@ -8,9 +8,22 @@
 
 import SwiftUI
 
+class UserSettings: ObservableObject {
+    @Published var score = 0
+}
+
 struct ContentView: View {
+    @ObservedObject var settings = UserSettings()
+
     var body: some View {
-        Text("Hello World")
+        VStack {
+            Text("Your score is \(settings.score)")
+            Button(action: {
+                self.settings.score += 1
+            }) {
+                Text("Increase Score")
+            }
+        }
     }
 }
 
